@@ -149,8 +149,9 @@ $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
             <div class="enlace">
                 <i class='bx bxs-cog'></i>
                 <select id="role-select" class="custom-select">
+                    <option value="default" selected>𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗜𝗔𝗦:</option>
                     <?php foreach ($roles_array as $rol): ?>
-                        <option value="<?php echo $rol; ?>" <?php echo ($rol == $current_role) ? 'selected' : ''; ?>><?php echo $rol; ?></option>
+                        <option value="<?php echo $rol; ?>" <?php echo ($rol == $current_role) ? 'selected' : ''; ?>>‎ ‎ ‎ <?php echo $rol; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -173,11 +174,11 @@ $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
         <div id="message-container" class="message-container">
         <?php
         if ($current_role == 'Director') {
-            echo '<p>Bienvenido Director. También tiene acceso a Mentor y Docente.</p>';
+            echo '<p>𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗼 𝗗𝗶𝗿𝗲𝗰𝘁𝗼𝗿.</p>';
         } elseif ($current_role == 'Mentor') {
-            echo '<p>Bienvenido Mentor</p>';
+            echo '<p>𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗼 𝗠𝗲𝗻𝘁𝗼𝗿.</p>';
         } elseif ($current_role == 'Docente') {
-            echo '<p>Bienvenido Docente</p>';
+            echo '<p>𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗼 𝗗𝗼𝗰𝗲𝗻𝘁𝗲.</p>';
         }
         ?>
     </div>
@@ -205,7 +206,7 @@ $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
 
             var messageContainer = document.getElementById('message-container');
             if (selectedRole === 'Director') {
-                messageContainer.innerHTML = '<p>Bienvenido Director. También tiene acceso a Mentor y Docente.</p>';
+                messageContainer.innerHTML = '<p></p>';
             } else if (selectedRole === 'Mentor') {
                 messageContainer.innerHTML = '<p>Bienvenido Mentor</p>';
             } else if (selectedRole === 'Docente') {
