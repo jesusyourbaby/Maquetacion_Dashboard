@@ -1,0 +1,145 @@
+/* FONTS GOOGLE */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+/* VARIABLES */
+
+:root {
+    --blanco: #E0E0E0;
+    --azul-opacidad: #184463;
+    --bg-menu: #003053;
+    --bg-body: #C7E1FF;
+}
+
+/* GENERALES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--blanco);
+    display: flex;
+}
+
+/* LAYOUT */
+
+.menu-dashboard {
+    width: 100%;
+    max-width: 150px;
+    height: 100vh;
+    background: var(--bg-menu);
+    padding: 20px;
+    transition: max-width .3s ease;
+}
+
+.top-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-menu .logo {
+    display: flex;
+    align-items: center;
+}
+
+.top-menu .logo img {
+    width: 40px;
+    transition: width .3s ease;
+}
+
+.top-menu .logo span {
+    font-size: 20px;
+    margin-left: 20px;
+    display: block;
+}
+
+.tablero {
+    padding: 20px;
+    margin-top: 0%;
+    height: auto;
+    width: 100%;
+}
+
+/* ENLACES MENU */
+
+.menu .enlace {
+    width: 100%;
+    padding: 20px 0 20px 17px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all .3s ease;
+}
+
+.menu .enlace:hover {
+    background: var(--azul-opacidad);
+}
+
+.menu .enlace i {
+    margin-right: 20px;
+    font-size: 25px;
+}
+
+.menu .enlace span {
+    opacity: 1;
+    transition: opacity .3s ease;
+}
+
+.menu-dashboard.open {
+    max-width: 300px;
+}
+
+.menu-dashboard.open .top-menu .logo span {
+    display: block;
+}
+
+.menu-dashboard.open .menu .enlace span {
+    opacity: 1;
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 768px) {
+    .menu-dashboard {
+        max-width: 100px;
+    }
+    .menu-dashboard.open {
+        max-width: 200px;
+    }
+    .top-menu .logo img {
+        width: 30px;
+    }
+    .top-menu .logo span {
+        font-size: 16px;
+        margin-left: 10px;
+    }
+    .menu .enlace span {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .menu-dashboard {
+        max-width: 70px;
+    }
+    .menu-dashboard.open {
+        max-width: 150px;
+    }
+    .top-menu .logo img {
+        width: 20px;
+    }
+    .top-menu .logo span {
+        font-size: 12px;
+        margin-left: 5px;
+    }
+    .menu .enlace span {
+        font-size: 12px;
+    }
+}

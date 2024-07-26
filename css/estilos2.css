@@ -1,0 +1,116 @@
+/* FONTS GOOGLE */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+/* VARIABLES */
+
+:root {
+    --blanco: #E0E0E0;
+    --negro: #000000;
+    --azul-opacidad: #184463;
+    --bg-menu: #003053;
+    --bg-body: #C7E1FF;
+    --bg-login: #00324c;
+    --login-input-bg: #004a71;
+    --login-input-color: #ffffff; /* Color del texto */
+    --login-button-bg: #002f4b;
+    --login-button-color: #ffffff;
+    --login-button-hover-bg: #001f2b;
+}
+
+/* GENERALES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--blanco);
+    background-color: var(--bg-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* LOGIN STYLES */
+
+.login-body {
+    background-color: var(--bg-body);
+}
+
+.login-container {
+    background-color: var(--bg-login);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.19);
+    text-align: center;
+    width: 300px;
+}
+
+.login-avatar img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: var(--login-input-color);
+    transition: color 0.3s;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--login-input-bg);
+    color: var(--login-input-color);
+    font-size: 16px;
+}
+
+.input-group input::placeholder {
+    color: var(--login-input-color);
+}
+
+/* Mantener el fondo y color del texto e iconos igual cuando el campo está en foco o lleno */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+    background-color: var(--login-input-bg);
+    color: var(--login-input-color);
+}
+
+.input-group input:focus ~ i,
+.input-group input:not(:placeholder-shown) ~ i {
+    color: var(--login-input-color);
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--login-button-bg);
+    color: var(--login-button-color);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--login-button-hover-bg);
+}
