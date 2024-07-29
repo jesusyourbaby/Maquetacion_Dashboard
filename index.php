@@ -195,13 +195,13 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             }
             ?>
         </div>
-        <?php if ($selected_dashboard): ?>
+        <?php if ($selected_dashboard || $current_role == 'Docente'): ?>
             <div class="tablero">
-                <?php if ($selected_dashboard == 'TAREAS'): ?>
+                <?php if ($selected_dashboard == 'TAREAS' && $current_role != 'Docente'): ?>
                     <iframe title="Dashboard_Vinculacion - Tareas" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
                 <?php elseif ($selected_dashboard == 'PROYECTOS'): ?>
                     <iframe title="Dashboard_Vinculacion - Proyectos" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=d3a902f0a34f1c82b329" frameborder="0" allowFullScreen="true"></iframe>
-                <?php elseif ($selected_dashboard == 'INSTITUCIONES'): ?>
+                <?php elseif ($selected_dashboard == 'INSTITUCIONES' || $current_role == 'Docente'): ?>
                     <iframe title="Dashboard_Vinculacion - Instituciones" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
                 <?php endif; ?>
             </div>
