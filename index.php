@@ -40,6 +40,22 @@ if (isset($_POST['roles']) && in_array($_POST['roles'], $roles_array)) {
 
 $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
 
+// Obtener los accesos basados en el rol
+function obtenerAccesos($rol) {
+    $accesos = [];
+    if ($rol === 'Director') {
+        $accesos = ['TAREAS', 'PROYECTOS', 'INSTITUCIONES'];
+    } elseif ($rol === 'Mentor') {
+        $accesos = ['PROYECTOS', 'INSTITUCIONES'];
+    } elseif ($rol === 'Docente') {
+        $accesos = ['INSTITUCIONES'];
+    }
+    return $accesos;
+}
+
+$accesos = obtenerAccesos($current_role);
+
+$selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -147,44 +163,43 @@ $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
                 <span onclick="showDashboard(); return false">Dashboard</span>
             </div>
             <div class="enlace">
-                <i class='bx bxs-cog'></i>
-                <select id="role-select" class="custom-select">
-                    <option value="default" selected>𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗜𝗔𝗦:</option>
-                    <?php foreach ($roles_array as $rol): ?>
-                        <option value="<?php echo $rol; ?>" <?php echo ($rol == $current_role) ? 'selected' : ''; ?>>‎ ‎ ‎ <?php echo $rol; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="enlace">
                 <i class="bx bxs-exit"></i>
                 <span onclick="location.href='logout.php';">Cerrar Sesion</span>
             </div>
         </div>
     </div>
     <div class="seccion">
-        <div id="tablero" class="tablero" style="display: <?php echo ($current_role == 'Director') ? 'block' : 'none'; ?>">
+        <div id="tablero" class="tablero" style="display: <?php echo in_array('TAREAS', $accesos) ? 'block' : 'none'; ?>">
             <!--IFRAMES TAREAS-->
             <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
         </div>
-        <div id="mentor" class="tablero" style="display: <?php echo ($current_role == 'Mentor') ? 'block' : 'none'; ?>">
-            <!--IFRAMES PROYECTOS-->
-            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=d3a902f0a34f1c82b329" frameborder="0" allowFullScreen="true"></iframe>
-        </div>
-        <div id="docente" class="tablero" style="display: <?php echo ($current_role == 'Docente') ? 'block' : 'none'; ?>">
-            <!--IFRAMES INSTITUCIONES-->
-            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
-        </div>
         <div id="message-container" class="message-container">
-        <?php
-        if ($current_role == 'Director') {
-            echo '<p>𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗼 𝗗𝗶𝗿𝗲𝗰𝘁𝗼𝗿.</p>';
-        } elseif ($current_role == 'Mentor') {
-            echo '<p>𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗼 𝗠𝗲𝗻𝘁𝗼𝗿.</p>';
-        } elseif ($current_role == 'Docente') {
-            echo '<p>𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗼 𝗗𝗼𝗰𝗲𝗻𝘁𝗲.</p>';
-        }
-        ?>
-    </div>
+            <?php
+            if ($current_role == 'Director') {
+                echo '<p>Bienvenido Director.</p>';
+            } elseif ($current_role == 'Mentor') {
+                echo '<p>Bienvenido Mentor.</p>';
+                echo '<form method="post" id="dashboard-form">
+                        <select name="dashboard" onchange="this.form.submit();">
+                            <option value="default">Seleccione un Dashboard:</option>
+                            <option value="PROYECTOS" ' . ($selected_dashboard == 'PROYECTOS' ? 'selected' : '') . '>Proyectos</option>
+                            <option value="INSTITUCIONES" ' . ($selected_dashboard == 'INSTITUCIONES' ? 'selected' : '') . '>Instituciones</option>
+                        </select>
+                      </form>';
+            } elseif ($current_role == 'Docente') {
+                echo '<p>Bienvenido Docente.</p>';
+            }
+            ?>
+        </div>
+        <?php if ($selected_dashboard): ?>
+            <div class="tablero">
+                <?php if ($selected_dashboard == 'PROYECTOS'): ?>
+                    <iframe title="Dashboard_Vinculacion - Proyectos" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=d3a902f0a34f1c82b329" frameborder="0" allowFullScreen="true"></iframe>
+                <?php elseif ($selected_dashboard == 'INSTITUCIONES'): ?>
+                    <iframe title="Dashboard_Vinculacion - Instituciones" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
     <div class="user-info">
         <p><i class="bi bi-person-circle"></i>Usuario: <?php echo $_SESSION['usuario']; ?></p>
@@ -209,9 +224,10 @@ $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
 
             var messageContainer = document.getElementById('message-container');
             if (selectedRole === 'Director') {
-                messageContainer.innerHTML = '<p></p>';
+                messageContainer.innerHTML = '<p>Bienvenido Director</p>';
             } else if (selectedRole === 'Mentor') {
                 messageContainer.innerHTML = '<p>Bienvenido Mentor</p>';
+                messageContainer.innerHTML += '<form method="post" id="dashboard-form"><select name="dashboard" onchange="this.form.submit();"><option value="default">Seleccione un Dashboard:</option><option value="PROYECTOS">Proyectos</option><option value="INSTITUCIONES">Instituciones</option></select></form>';
             } else if (selectedRole === 'Docente') {
                 messageContainer.innerHTML = '<p>Bienvenido Docente</p>';
             }
