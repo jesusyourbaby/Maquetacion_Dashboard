@@ -163,13 +163,16 @@ $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
     </div>
     <div class="seccion">
         <div id="tablero" class="tablero" style="display: <?php echo ($current_role == 'Director') ? 'block' : 'none'; ?>">
-            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076" frameborder="0" allowFullScreen="true"></iframe>
+            <!--IFRAMES TAREAS-->
+            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
         </div>
-        <div id="mentor" class="mentor" style="display: none;">
-            <p>Bienvenido Mentor</p>
+        <div id="mentor" class="tablero" style="display: <?php echo ($current_role == 'Mentor') ? 'block' : 'none'; ?>">
+            <!--IFRAMES PROYECTOS-->
+            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=d3a902f0a34f1c82b329" frameborder="0" allowFullScreen="true"></iframe>
         </div>
-        <div id="docente" class="docente" style="display: none;">
-            <p>Bienvenido Docente</p>
+        <div id="docente" class="tablero" style="display: <?php echo ($current_role == 'Docente') ? 'block' : 'none'; ?>">
+            <!--IFRAMES INSTITUCIONES-->
+            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
         </div>
         <div id="message-container" class="message-container">
         <?php
