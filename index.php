@@ -169,14 +169,18 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         </div>
     </div>
     <div class="seccion">
-        <div id="tablero" class="tablero" style="display: <?php echo in_array('TAREAS', $accesos) ? 'block' : 'none'; ?>">
-            <!--IFRAMES TAREAS-->
-            <iframe title="Dashboard_Vinculacion - copia" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
-        </div>
         <div id="message-container" class="message-container">
             <?php
             if ($current_role == 'Director') {
                 echo '<p>Bienvenido Director.</p>';
+                echo '<form method="post" id="dashboard-form">
+                        <select name="dashboard" onchange="this.form.submit();">
+                            <option value="default">Seleccione un Dashboard:</option>
+                            <option value="TAREAS" ' . ($selected_dashboard == 'TAREAS' ? 'selected' : '') . '>Tareas</option>
+                            <option value="PROYECTOS" ' . ($selected_dashboard == 'PROYECTOS' ? 'selected' : '') . '>Proyectos</option>
+                            <option value="INSTITUCIONES" ' . ($selected_dashboard == 'INSTITUCIONES' ? 'selected' : '') . '>Instituciones</option>
+                        </select>
+                      </form>';
             } elseif ($current_role == 'Mentor') {
                 echo '<p>Bienvenido Mentor.</p>';
                 echo '<form method="post" id="dashboard-form">
@@ -193,7 +197,9 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         </div>
         <?php if ($selected_dashboard): ?>
             <div class="tablero">
-                <?php if ($selected_dashboard == 'PROYECTOS'): ?>
+                <?php if ($selected_dashboard == 'TAREAS'): ?>
+                    <iframe title="Dashboard_Vinculacion - Tareas" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
+                <?php elseif ($selected_dashboard == 'PROYECTOS'): ?>
                     <iframe title="Dashboard_Vinculacion - Proyectos" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=d3a902f0a34f1c82b329" frameborder="0" allowFullScreen="true"></iframe>
                 <?php elseif ($selected_dashboard == 'INSTITUCIONES'): ?>
                     <iframe title="Dashboard_Vinculacion - Instituciones" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
@@ -225,6 +231,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             var messageContainer = document.getElementById('message-container');
             if (selectedRole === 'Director') {
                 messageContainer.innerHTML = '<p>Bienvenido Director</p>';
+                messageContainer.innerHTML += '<form method="post" id="dashboard-form"><select name="dashboard" onchange="this.form.submit();"><option value="default">Seleccione un Dashboard:</option><option value="TAREAS">Tareas</option><option value="PROYECTOS">Proyectos</option><option value="INSTITUCIONES">Instituciones</option></select></form>';
             } else if (selectedRole === 'Mentor') {
                 messageContainer.innerHTML = '<p>Bienvenido Mentor</p>';
                 messageContainer.innerHTML += '<form method="post" id="dashboard-form"><select name="dashboard" onchange="this.form.submit();"><option value="default">Seleccione un Dashboard:</option><option value="PROYECTOS">Proyectos</option><option value="INSTITUCIONES">Instituciones</option></select></form>';
