@@ -5,8 +5,8 @@
 
 :root {
     --blanco: #E0E0E0;
-    --azul-opacidad: #184463;
-    --bg-menu: #003053;
+    --azul-opacidad: #1E0082;
+    --bg-menu: #1E0082;
     --bg-body: #C7E1FF;
 }
 
@@ -23,6 +23,7 @@ body {
     color: var(--blanco);
     display: flex;
 }
+
 
 /* LAYOUT */
 
