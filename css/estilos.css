@@ -34,6 +34,7 @@ body {
     background: var(--bg-menu);
     padding: 20px;
     transition: max-width .3s ease;
+    z-index: 999;
 }
 
 .top-menu {

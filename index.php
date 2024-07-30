@@ -87,9 +87,11 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
+            z-index: 1000;
         }
         .user-info i {
             margin-right: 5px;
+            
         }
         .menu .enlace, .menu .custom-select-container {
             cursor: pointer;
@@ -147,13 +149,14 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         }
         .navbar {
             width: 100%; /* Asegura que la navbar ocupe todo el ancho */
-            position: static; /* Mantiene la navbar en la parte superior */
+            position: fixed; /* Permite que la navbar se quede fija al hacer scroll */
+            left: 0;
+            padding-left: 320px;
             top: 0; /* Fija la navbar en la parte superior */
-            z-index: 1000; /* Asegura que la navbar esté por encima de otros elementos */
             background-color: #423187; /* Color de fondo de la navbar */
         }
         .tablero {
-            margin-top: 0px; /* Ajusta este valor a la altura de tu navbar */
+            margin-top: 70px; /* Ajusta este valor a la altura de tu navbar */
             flex: 1; /* Permite que el tablero ocupe el espacio restante */
             padding: 20px; /* Añade algo de padding para mayor separación */
             overflow: auto; /* Permite el desplazamiento si el contenido es más grande */
@@ -185,13 +188,12 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         </div>
     </div>
     <div class="seccion">
-        <div>
         <nav class="navbar navbar-expand-lg" style="background-color:#423187;">
             <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse " id="navbarSupportedContent" >
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
             <div>
             <?php
             if ($current_role == 'Director') {
@@ -221,7 +223,6 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             </div>
         </div>
         </nav>
-        </div>
         <?php if ($selected_dashboard || $current_role == 'Docente'): ?>
             <div class="tablero">
                 <?php if ($selected_dashboard == 'TAREAS' && $current_role != 'Docente'): ?>
