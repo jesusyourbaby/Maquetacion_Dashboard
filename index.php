@@ -1,9 +1,11 @@
 <?php
-session_start();
+session_start(); //Inicio de Sesión y Verificación
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
+
+//Conexión a la Base de Datos
 
 $servername = "localhost";
 $username = "root";
@@ -41,6 +43,7 @@ if (isset($_POST['roles']) && in_array($_POST['roles'], $roles_array)) {
 $current_role = $_SESSION['rol'] ?? $roles_array[0]; // Primer rol por defecto
 
 // Obtener los accesos basados en el rol
+// Llama a esta función para obtener los accesos del rol actual.
 function obtenerAccesos($rol) {
     $accesos = [];
     if ($rol === 'Director') {
