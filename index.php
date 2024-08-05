@@ -1,11 +1,11 @@
 <?php
-session_start(); //Inicio de Sesión y Verificación
+session_start(); // Inicio de Sesión y Verificación
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
 
-//Conexión a la Base de Datos
+// Conexión a la Base de Datos
 
 $servername = "localhost";
 $username = "root";
@@ -83,7 +83,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background-color: #423187;
+            background-color: #006629;
             color: white;
             padding: 10px;
             border-radius: 5px;
@@ -94,7 +94,6 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         }
         .user-info i {
             margin-right: 5px;
-            
         }
         .menu .enlace, .menu .custom-select-container {
             cursor: pointer;
@@ -106,13 +105,40 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             color: white;
             font-size: 16px;
         }
-        .menu .enlace:hover,
-        .menu .enlace.active,
-        .menu .custom-select-container:hover,
-        .menu .custom-select-container.active {
-            background-color: white;
-            color: #2c3e50;
+        .enlace.active {
+            display: flex;
+            align-items: center;
         }
+        /* Cambiar a blanco el fondo y el texto a un color oscuro cuando se pasa el cursor */
+        .menu .enlace:hover {
+            background-color: white;
+            color: #2c3e50; /* Color del texto al pasar el cursor */
+        }
+
+        /* Estilo para el select */
+        .enlace.active select {
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            color: white; /* Color del texto por defecto */
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding: 0; /* Elimina el padding interno */
+        }
+
+        /* Cambiar el color del select al pasar el cursor */
+        .enlace.active:hover select {
+            color: #2c3e50; /* Color del texto del select al pasar el cursor */
+        }
+
+        /* Estilo para las opciones del select */
+        .enlace.active select option {
+            background-color: white; /* Color de fondo de las opciones */
+            color: black; /* Color del texto de las opciones */
+        }
+
         .custom-select-container {
             position: relative;
             width: 100%;
@@ -126,10 +152,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            padding: 10px 30px 10px 10px; 
-        }
-        .custom-select option {
-            color: #2c3e50;
+            padding: 10px 30px 10px 10px;
         }
         .custom-select-container::after {
             content: '\f078';
@@ -150,6 +173,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             font-size: 18px;
             color: black;
         }
+        
         .navbar {
             width: 100%; /* Asegura que la navbar ocupe todo el ancho */
             position: fixed; /* Permite que la navbar se quede fija al hacer scroll */
@@ -182,8 +206,24 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             <br>
             <div class="enlace active">
                 <i class="bx bx-grid-alt"></i>
-                <span onclick="showDashboard(); return false">Dashboard</span>
+                <form method="post" id="dashboard-form">
+                    <select name="dashboard" onchange="this.form.submit();">
+                        <?php if ($current_role == 'Director') : ?>
+                            <option value="default">Dashboard</option>
+                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>Tareas</option>
+                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
+                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
+                        <?php elseif ($current_role == 'Mentor') : ?>
+                            <option value="default">Dashboard</option>
+                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
+                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
+                        <?php elseif ($current_role == 'Docente') : ?>
+                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
+                        <?php endif; ?>
+                    </select>
+                </form>
             </div>
+
             <div class="enlace">
                 <i class="bx bxs-exit"></i>
                 <span onclick="location.href='logout.php';">Cerrar Sesion</span>
@@ -191,43 +231,27 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         </div>
     </div>
     <div class="seccion">
-        <nav class="navbar navbar-expand-lg" style="background-color:#423187;">
+        <nav class="navbar navbar-expand-lg" style="background-color:#006629;">
             <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse " id="navbarSupportedContent">
-            <div>
-            <?php
-            if ($current_role == 'Director') {
-                echo '<p>Bienvenido Director.</p>';
-                echo '<form method="post" id="dashboard-form">
-                        <select name="dashboard" onchange="this.form.submit();">
-                            <option value="default">Seleccione un Dashboard:</option>
-                            <option value="TAREAS" ' . ($selected_dashboard == 'TAREAS' ? 'selected' : '') . '>Tareas</option>
-                            <option value="PROYECTOS" ' . ($selected_dashboard == 'PROYECTOS' ? 'selected' : '') . '>Proyectos</option>
-                            <option value="INSTITUCIONES" ' . ($selected_dashboard == 'INSTITUCIONES' ? 'selected' : '') . '>Instituciones</option>
-                        </select>
-                      </form>';
-            } elseif ($current_role == 'Mentor') {
-                echo '<p>Bienvenido Mentor.</p>';
-                echo '<form method="post" id="dashboard-form">
-                        <select name="dashboard" onchange="this.form.submit();">
-                            <option value="default">Seleccione un Dashboard:</option>
-                            <option value="PROYECTOS" ' . ($selected_dashboard == 'PROYECTOS' ? 'selected' : '') . '>Proyectos</option>
-                            <option value="INSTITUCIONES" ' . ($selected_dashboard == 'INSTITUCIONES' ? 'selected' : '') . '>Instituciones</option>
-                        </select>
-                      </form>';
-            } elseif ($current_role == 'Docente') {
-                echo '<p>Bienvenido Docente.</p>';
-            }
-            ?>
-        </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div>
+                        <?php
+                        if ($current_role == 'Director') {
+                            echo '<p>Bienvenido Director.</p>';
+                        } elseif ($current_role == 'Mentor') {
+                            echo '<p>Bienvenido Mentor.</p>';
+                        } elseif ($current_role == 'Docente') {
+                            echo '<p>Bienvenido Docente.</p>';
+                        }
+                        ?>
+                    </div>
+                </div>
             </div>
-        </div>
         </nav>
-        <?php if ($selected_dashboard || $current_role == 'Docente'): ?>
-            <div class="tablero">
+        <div class="tablero">
                 <?php if ($selected_dashboard == 'TAREAS' && $current_role != 'Docente'): ?>
                     <iframe title="Dashboard_Vinculacion - Tareas" width="1250" height="600" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
                 <?php elseif ($selected_dashboard == 'PROYECTOS'): ?>
@@ -236,40 +260,10 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                     <iframe title="Dashboard_Vinculacion - Instituciones" width="1250" height="600" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
                 <?php endif; ?>
             </div>
-        <?php endif; ?>
+        <div class="user-info">
+            <i class="bi bi-person-fill">User: </i>
+            <?php echo htmlspecialchars($usuario); ?>
+        </div>
     </div>
-    <div class="user-info">
-        <p><i class="bi bi-person-circle"></i>Usuario: <?php echo $_SESSION['usuario']; ?></p>
-        <p><i class="bi bi-gear"></i>Rol: <span id="current-role"><?php echo $current_role; ?></span></p>
-    </div>
-    <form method="post" style="display: none;" id="role-form">
-        <input type="hidden" name="roles" id="hidden-role">
-    </form>
-    
-    <script>
-        document.getElementById('role-select').addEventListener('change', function() {
-            var selectedRole = this.value;
-            document.getElementById('hidden-role').value = selectedRole;
-            document.getElementById('role-form').submit();
-        });
-
-        // Actualizar el rol en el pie de página al cambiar el rol
-        document.getElementById('role-select').addEventListener('change', function() {
-            var selectedRole = this.value;
-            document.getElementById('current-role').textContent = selectedRole;
-
-            var messageContainer = document.getElementById('message-container');
-            if (selectedRole === 'Director') {
-                messageContainer.innerHTML = '<p>Bienvenido Director</p>';
-                messageContainer.innerHTML += '<form method="post" id="dashboard-form"><select name="dashboard" onchange="this.form.submit();"><option value="default">Seleccione un Dashboard:</option><option value="TAREAS">Tareas</option><option value="PROYECTOS">Proyectos</option><option value="INSTITUCIONES">Instituciones</option></select></form>';
-            } else if (selectedRole === 'Mentor') {
-                messageContainer.innerHTML = '<p>Bienvenido Mentor</p>';
-                messageContainer.innerHTML += '<form method="post" id="dashboard-form"><select name="dashboard" onchange="this.form.submit();"><option value="default">Seleccione un Dashboard:</option><option value="PROYECTOS">Proyectos</option><option value="INSTITUCIONES">Instituciones</option></select></form>';
-            } else if (selectedRole === 'Docente') {
-                messageContainer.innerHTML = '<p>Bienvenido Docente</p>';
-            }
-        });
-    </script>
-    
 </body>
 </html>
