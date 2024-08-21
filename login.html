@@ -28,7 +28,7 @@
 
         .login-box {
             width: 320px;
-            background: #003314;  /* Fondo azul oscuro */
+            background: #003314;  /* Fondo verde oscuro */
             color: #fff;
             top: 50%;
             left: 50%;
@@ -74,7 +74,7 @@
             padding: 10px 10px 10px 40px;
             box-sizing: border-box;
             border: none;
-            background: #008033;  /* Fondo azul intermedio */
+            background: #008033;  /* Fondo verde intermedio */
             outline: none;
             height: 40px;
             color: #fff;
@@ -88,7 +88,7 @@
             text-align: center;  /* Centrar el placeholder */
         }
 
-        .login-box input[type="submit"] {
+        .login-box input[type="submit"], .login-box input[type="button"] {
             border: none;
             outline: none;
             height: 40px;
@@ -97,11 +97,12 @@
             font-size: 18px;
             border-radius: 20px;  /* Bordes redondeados */
             width: 100%;
+            margin-top: 10px;
         }
 
-        .login-box input[type="submit"]:hover {
+        .login-box input[type="submit"]:hover, .login-box input[type="button"]:hover {
             cursor: pointer;
-            background: #003314;
+            background: #055223;
             color: #ffffff;
         }
 
@@ -129,6 +130,45 @@
             font-size: 16px;
             color: #fff !important;
         }
+        /* Estilo por defecto del botón Ingresar */
+        .login-btn {
+            background: #5b856c; /* Color original del botón Ingresar */
+        }
+
+        /* Cambiar color al hacer hover o focus en el botón Ingresar */
+        .login-btn:hover, .login-btn:focus {
+            background: #003314; /* Color para hover y focus en el botón Ingresar */
+        }
+
+        /* Estilo por defecto del botón Registrarse */
+        .register-btn {
+            background: #FF5733; /* Color original del botón Registrarse */
+        }
+
+        /* Cambiar color al hacer hover o focus en el botón Registrarse */
+        .register-btn:hover, .register-btn:focus {
+            background: #C13B1A; /* Color para hover y focus en el botón Registrarse */
+        }
+
+        /* Evitar conflictos con estilos generales */
+        .login-box input[type="submit"], .login-box input[type="button"] {
+            border: none;
+            outline: none;
+            height: 40px;
+            background: #047932;  /* Color original del botón */
+            color: #fff;
+            font-size: 18px;
+            border-radius: 20px;  /* Bordes redondeados */
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Para hover en todos los botones que no sean el de Registrarse */
+        .login-box input[type="submit"]:hover, .login-box input[type="button"]:hover:not(.register-btn) {
+            cursor: pointer;
+            background: #055223;
+            color: #ffffff;
+        }
     </style>
     <!-- BOX ICONS -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
@@ -151,9 +191,15 @@
                 <input type="password" name="password" placeholder="Ingrese su Contraseña" id="password" required>
             </div>
             <!-- LOGIN-ENTER INPUT -->
+            <!-- REGISTER BUTTON -->
             <div class="input-container">
-                <i class="bi bi-box-arrow-in-right"></i>
-                <input type="submit" value="INGRESAR">
+                <i class="bi bi-box-arrow-in-right" style="margin: 5px;"></i>
+                <input type="submit" value="INGRESAR" class="login-btn">
+            </div>
+
+            <div class="input-container">
+                <i class="bi bi-pencil-square" style="margin: 5px;"></i>
+                <input type="button" value="REGISTRARSE" class="register-btn" onclick=" location.href='register.html';">
             </div>
             <a>© 2024 Universidad Técnica de Manabí</a><br>
         </form>

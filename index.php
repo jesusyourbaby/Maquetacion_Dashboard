@@ -48,9 +48,9 @@ function obtenerAccesos($rol) {
     if ($rol === 'Director') {
         $accesos = ['TAREAS', 'PROYECTOS', 'INSTITUCIONES'];
     } elseif ($rol === 'Mentor') {
-        $accesos = ['PROYECTOS', 'INSTITUCIONES'];
-    } elseif ($rol === 'Docente') {
-        $accesos = ['INSTITUCIONES'];
+        $accesos = ['TAREAS', 'PROYECTOS'];
+    } elseif ($rol === 'Responsable') {
+        $accesos = ['TAREAS', 'PROYECTOS', 'INSTITUCIONES'];
     }
     return $accesos;
 }
@@ -214,9 +214,12 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                             <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
                         <?php elseif ($current_role == 'Mentor') : ?>
                             <option value="default">Dashboard</option>
+                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>Tareas</option>
                             <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
-                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
-                        <?php elseif ($current_role == 'Docente') : ?>
+                        <?php elseif ($current_role == 'Responsable') : ?>
+                            <option value="default">Dashboard</option>
+                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>Tareas</option>
+                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
                             <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
                         <?php endif; ?>
                     </select>
@@ -242,8 +245,8 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                             echo '<p>Bienvenido Director.</p>';
                         } elseif ($current_role == 'Mentor') {
                             echo '<p>Bienvenido Mentor.</p>';
-                        } elseif ($current_role == 'Docente') {
-                            echo '<p>Bienvenido Docente.</p>';
+                        } elseif ($current_role == 'Responsable') {
+                            echo '<p>Bienvenido Responsable.</p>';
                         }
                         ?>
                     </div>
@@ -251,11 +254,11 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             </div>
         </nav>
         <div class="tablero">
-                <?php if ($selected_dashboard == 'TAREAS' && $current_role != 'Docente'): ?>
+                <?php if ($selected_dashboard == 'TAREAS'): ?>
                     <iframe title="Dashboard_Vinculacion - Tareas" width="1250" height="600" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
                 <?php elseif ($selected_dashboard == 'PROYECTOS'): ?>
                     <iframe title="Dashboard_Vinculacion - Proyectos" width="1250" height="600" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=d3a902f0a34f1c82b329" frameborder="0" allowFullScreen="true"></iframe>
-                <?php elseif ($selected_dashboard == 'INSTITUCIONES' || $current_role == 'Docente'): ?>
+                <?php elseif ($selected_dashboard == 'INSTITUCIONES'): ?>
                     <iframe title="Dashboard_Vinculacion - Instituciones" width="1250" height="600" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false&pageName=192b6339f0de780f4904" frameborder="0" allowFullScreen="true"></iframe>
                 <?php endif; ?>
             </div>
