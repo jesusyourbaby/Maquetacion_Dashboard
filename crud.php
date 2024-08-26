@@ -12,7 +12,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 $message = '';
 $error = '';
 // Obtener el usuario de la sesión
-$usuario = $_SESSION['username'];
+$user = $_SESSION['username'];
 
 // Crear un nuevo registro
 if (isset($_POST['create'])) {
@@ -59,7 +59,6 @@ if (isset($_POST['update'])) {
     } else {
         $error = "Todos los campos son obligatorios.";
     }
-
 }
 
 // Eliminar un registro existente
@@ -239,7 +238,7 @@ $conn->close(); // Cerrar la conexión
         <div class="menu">
             <div class="enlace">
                 <i class="bx bxs-exit"></i>
-                <span onclick="location.href='register.php';">Cerrar Sesión</span>
+                <span onclick="location.href='logout.php';">Cerrar Sesión</span>
             </div>
         </div>
     </div>
@@ -247,10 +246,10 @@ $conn->close(); // Cerrar la conexión
     <div class="content">
         <h2>Gestión de Usuarios</h2>
         <?php if (!empty($message)) : ?>
-            <div class="message"><?= $message; ?></div>
+            <div id="message" class="message"><?= $message; ?></div>
         <?php endif; ?>
         <?php if (!empty($error)) : ?>
-            <div class="error"><?= $error; ?></div>
+            <div id="error" class="error"><?= $error; ?></div>
         <?php endif; ?>
 
         <!-- Formulario para crear un nuevo usuario -->
@@ -305,8 +304,31 @@ $conn->close(); // Cerrar la conexión
         </table>
         <div class="user-info">
             <i class="bi bi-person-fill">Admin: </i>
-            <?php echo htmlspecialchars($usuario); ?>
+            <?php echo htmlspecialchars($user); ?>
         </div>
     </div>
+
+    <script>
+        // Función para ocultar mensajes después de 5 segundos
+        function hideMessages() {
+            const message = document.getElementById('message');
+            const error = document.getElementById('error');
+
+            if (message) {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 5000);
+            }
+
+            if (error) {
+                setTimeout(() => {
+                    error.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        window.onload = hideMessages;
+    </script>
 </body>
 </html>
