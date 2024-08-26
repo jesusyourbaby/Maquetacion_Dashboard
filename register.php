@@ -1,5 +1,40 @@
+<?php
+session_start();
+include 'conexion.php'; // Incluir la conexión a la base de datos
+
+// Inicializar variables para manejar mensajes y datos
+$error = '';
+
+// Verificar si el formulario fue enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Validar que el nombre de usuario y la contraseña no estén vacíos
+    if (!empty($username) && !empty($password)) {
+        // Consultar la base de datos para verificar las credenciales
+        $sql = "SELECT * FROM usuarios_crud WHERE usuario='$username' AND contrasena='$password'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Crear una sesión y redirigir al usuario a `crud.php`
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
+            header("Location: crud.php");
+            exit();
+        } else {
+            $error = "Usuario o contraseña incorrectos.";
+        }
+    } else {
+        $error = "Por favor, complete todos los campos.";
+    }
+}
+
+$conn->close(); // Cerrar la conexión
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,15 +166,14 @@
             color: #fff !important;
         }
     </style>
-    <!-- BOX ICONS -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- BOOTSTRAP ICONS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="register-body">
     <div class="register-box">
         <img src="./img/Logo_utm.png" class="avatar" alt="Avatar Image">
         <h1>Login Administrador</h1>
+        <?php if (!empty($error)) : ?>
+            <div class="error"><?= $error; ?></div>
+        <?php endif; ?>
         <form class="register-form" action="register.php" method="post">
             <!-- USERNAME INPUT -->
             <div class="input-container">
@@ -156,7 +190,7 @@
                 <i class="bi bi-pencil-square"></i>
                 <input type="submit" value="ENTRAR" class="register-btn">
             </div>
-            <a href="login.html">Sistema de Procesos en Vinculacion</a><br>
+            <a href="login.php">Sistema de Procesos en Vinculación</a><br>
         </form>
     </div>
 </body>
