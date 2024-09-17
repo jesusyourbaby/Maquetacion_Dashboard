@@ -21,7 +21,7 @@ if (isset($_POST['create'])) {
     $contrasena = $_POST['contrasena'];
 
     if (!empty($usuario) && !empty($rol) && !empty($contrasena)) {
-        if ($rol=="Admin"){
+        if ($rol == "Admin") {
             $sql = "INSERT INTO usuarios_crud (usuario, rol, contrasena) VALUES ('$usuario', '$rol', '$contrasena')";
         } else {
             $sql = "INSERT INTO permiso (usuario, rol, contrasena) VALUES ('$usuario', '$rol', '$contrasena')";
@@ -36,10 +36,6 @@ if (isset($_POST['create'])) {
     }
 }
 
-// Leer los registros existentes
-$sql = "SELECT * FROM permiso";
-$result = $conn->query($sql);
-
 // Actualizar un registro existente
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
@@ -51,8 +47,6 @@ if (isset($_POST['update'])) {
         $sql = "UPDATE permiso SET usuario='$usuario', rol='$rol', contrasena='$contrasena' WHERE id=$id";
         if ($conn->query($sql) === TRUE) {
             $message = "Usuario actualizado con éxito.";
-            $sql = "SELECT * FROM permiso";
-            $result = $conn->query($sql);
         } else {
             $error = "Error al actualizar el usuario: " . $conn->error;
         }
@@ -69,8 +63,6 @@ if (isset($_POST['delete'])) {
         $sql = "DELETE FROM permiso WHERE id=$id";
         if ($conn->query($sql) === TRUE) {
             $message = "Usuario eliminado con éxito.";
-            $sql = "SELECT * FROM permiso";
-            $result = $conn->query($sql);
         } else {
             $error = "Error al eliminar el usuario: " . $conn->error;
         }
@@ -78,6 +70,23 @@ if (isset($_POST['delete'])) {
         $error = "ID es obligatorio para eliminar un usuario.";
     }
 }
+
+// Configuración de paginación
+$registros_por_pagina = 5; // Número de registros por página
+$pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1; // Página actual
+$offset = ($pagina_actual - 1) * $registros_por_pagina; // Offset para la consulta
+
+// Obtener el número total de registros
+$sql_total = "SELECT COUNT(*) AS total FROM permiso";
+$result_total = $conn->query($sql_total);
+$total_registros = $result_total->fetch_assoc()['total'];
+
+// Calcular el número total de páginas
+$total_paginas = ceil($total_registros / $registros_por_pagina);
+
+// Leer los registros existentes con límite y offset
+$sql = "SELECT * FROM permiso LIMIT $offset, $registros_por_pagina";
+$result = $conn->query($sql);
 
 $conn->close(); // Cerrar la conexión
 ?>
@@ -145,7 +154,9 @@ $conn->close(); // Cerrar la conexión
         }
 
         .menu-dashboard .enlace span {
-            vertical-align: middle;
+            display: inline-block;
+            padding: 10px 30px; /* Aumenta el área de clic */
+            border-radius: 5px; /* Redondear bordes si es necesario */
         }
 
         .content {
@@ -221,9 +232,31 @@ $conn->close(); // Cerrar la conexión
         .user-info i {
             margin-right: 5px;
         }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 0 5px;
+            text-decoration: none;
+            background-color: #003314;
+            color: white;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background-color: #055223;
+        }
+        .pagination .current {
+            background-color: #01953f ;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
     </style>
-    <!-- BOX ICONS -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="menu-dashboard">
@@ -236,12 +269,18 @@ $conn->close(); // Cerrar la conexión
         </div>
         <!-- MENU -->
         <div class="menu">
+            <!-- Nueva opción para crear un usuario -->
+            <div class="enlace">
+                <i class="bx bx-user-plus"></i>
+                <span onclick="toggleCrearUsuarioForm();">Crear Usuario</span>
+            </div>
             <div class="enlace">
                 <i class="bx bxs-exit"></i>
                 <span onclick="location.href='logout.php';">Cerrar Sesión</span>
             </div>
         </div>
     </div>
+
 
     <div class="content">
         <h2>Gestión de Usuarios</h2>
@@ -252,8 +291,8 @@ $conn->close(); // Cerrar la conexión
             <div id="error" class="error"><?= $error; ?></div>
         <?php endif; ?>
 
-        <!-- Formulario para crear un nuevo usuario -->
-        <form method="post">
+        <!-- Formulario para crear un nuevo usuario (inicialmente oculto) -->
+        <form method="post" id="crearUsuarioForm" style="display: none;">
             <label for="usuario">Usuario:</label>
             <input type="text" name="usuario" id="usuario" required>
             <label for="rol">Rol:</label>
@@ -266,7 +305,11 @@ $conn->close(); // Cerrar la conexión
             <label for="contrasena">Contraseña:</label>
             <input type="password" name="contrasena" id="contrasena" required>
             <button type="submit" name="create">Crear Usuario</button>
+            <button type="button" onclick="toggleCrearUsuarioForm();">Cerrar</button> <!-- Botón para cerrar -->
         </form>
+
+
+
 
         <h3>Usuarios Existentes</h3>
         <table>
@@ -292,6 +335,7 @@ $conn->close(); // Cerrar la conexión
                                     <option value="Director" <?= ($row['rol'] == 'Director') ? 'selected' : ''; ?>>Director</option>
                                     <option value="Mentor" <?= ($row['rol'] == 'Mentor') ? 'selected' : ''; ?>>Mentor</option>
                                     <option value="Responsable" <?= ($row['rol'] == 'Responsable') ? 'selected' : ''; ?>>Responsable</option>
+                                    <option value="Admin" <?= ($row['rol'] == 'Admin') ? 'selected' : ''; ?>>Admin</option>
                                 </select>
                                 <input type="password" name="contrasena" value="<?= $row['contrasena']; ?>" required>
                                 <button type="submit" name="update">Actualizar</button>
@@ -302,6 +346,20 @@ $conn->close(); // Cerrar la conexión
                 <?php endwhile; ?>
             </tbody>
         </table>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $total_paginas; $i++) : ?>
+                <?php if ($i == $pagina_actual) : ?>
+                    <!-- Página actual, no es un enlace -->
+                    <span class="current"><?= $i; ?></span>
+                <?php else : ?>
+                    <!-- Otras páginas, son enlaces -->
+                    <a href="?pagina=<?= $i; ?>"><?= $i; ?></a>
+                <?php endif; ?>
+            <?php endfor; ?>
+        </div>
+
         <div class="user-info">
             <i class="bi bi-person-fill">Admin: </i>
             <?php echo htmlspecialchars($user); ?>
@@ -330,5 +388,20 @@ $conn->close(); // Cerrar la conexión
         // Llamar a la función al cargar la página
         window.onload = hideMessages;
     </script>
+
+    <script>
+    // Función para mostrar u ocultar el formulario
+    function toggleCrearUsuarioForm() {
+        const form = document.getElementById('crearUsuarioForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';  // Mostrar el formulario
+            form.scrollIntoView({ behavior: 'smooth' });  // Hacer scroll al formulario
+        } else {
+            form.style.display = 'none';  // Ocultar el formulario
+        }
+    }
+</script>
+
+
 </body>
 </html>

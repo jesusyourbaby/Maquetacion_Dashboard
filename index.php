@@ -104,6 +104,13 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             color: white;
             font-size: 16px;
         }
+
+        .menu-dashboard.open .menu .enlace span {
+            opacity: 1;
+            padding: 10px 30px; /* Aumenta el área de clic */
+            border-radius: 5px; /* Redondear bordes si es necesario */
+        }
+
         .enlace.active {
             display: flex;
             align-items: center;
@@ -117,6 +124,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
         /* Estilo para el select */
         .enlace.active select {
             background-color: transparent;
+            padding: 10px;
             border: none;
             font-size: 16px;
             color: white; /* Color del texto por defecto */
@@ -124,7 +132,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            padding: 0; /* Elimina el padding interno */
+            width: 150px;
         }
 
         /* Cambiar el color del select al pasar el cursor */
@@ -209,18 +217,18 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                     <select name="dashboard" onchange="this.form.submit();">
                         <?php if ($current_role == 'Director') : ?>
                             <option value="default">Dashboard</option>
-                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>Tareas</option>
-                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
-                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
+                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>‎ Tareas</option>
+                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>‎ Proyectos</option>
+                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>‎ Instituciones</option>
                         <?php elseif ($current_role == 'Mentor') : ?>
                             <option value="default">Dashboard</option>
-                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>Tareas</option>
-                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
+                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>‎ Tareas</option>
+                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>‎ Proyectos</option>
                         <?php elseif ($current_role == 'Responsable') : ?>
                             <option value="default">Dashboard</option>
-                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>Tareas</option>
-                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>Proyectos</option>
-                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>Instituciones</option>
+                            <option value="TAREAS" <?= $selected_dashboard == 'TAREAS' ? 'selected' : '' ?>>‎ Tareas</option>
+                            <option value="PROYECTOS" <?= $selected_dashboard == 'PROYECTOS' ? 'selected' : '' ?>>‎ Proyectos</option>
+                            <option value="INSTITUCIONES" <?= $selected_dashboard == 'INSTITUCIONES' ? 'selected' : '' ?>>‎ Instituciones</option>
                         <?php endif; ?>
                     </select>
                 </form>

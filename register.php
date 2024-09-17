@@ -166,6 +166,10 @@ $conn->close(); // Cerrar la conexión
             color: #fff !important;
         }
     </style>
+    <!-- BOX ICONS -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- BOOTSTRAP ICONS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="register-body">
     <div class="register-box">
@@ -187,7 +191,7 @@ $conn->close(); // Cerrar la conexión
             </div>
             <!-- REGISTER BUTTON -->
             <div class="input-container">
-                <i class="bi bi-pencil-square"></i>
+                <i class="bi bi-pencil-square" style="margin: 5px;"></i>
                 <input type="submit" value="ENTRAR" class="register-btn">
             </div>
             <a href="login.php">Sistema de Procesos en Vinculación</a><br>
