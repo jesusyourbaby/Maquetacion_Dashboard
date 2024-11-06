@@ -16,3 +16,15 @@ function showLogin(){
     document.getElementById("login").style.display="";
 }
 
+function toggleDropdown() {
+    var dropdownMenu = document.querySelector('.user-menu .dropdown-menu');
+
+    // Cambiar el estilo de display entre block y none para mostrar/ocultar el menú
+    if (dropdownMenu.style.display === "block") {
+        dropdownMenu.style.display = "none";
+    } else {
+        dropdownMenu.style.display = "block";
+    }
+}
+
+

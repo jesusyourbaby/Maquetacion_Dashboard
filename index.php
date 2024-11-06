@@ -82,7 +82,7 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background-color: #006629;
+            /* background-color: #006629; */
             color: white;
             padding: 10px;
             border-radius: 5px;
@@ -195,6 +195,63 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             padding: 20px; /* Añade algo de padding para mayor separación */
             overflow: auto; /* Permite el desplazamiento si el contenido es más grande */
         }
+        .user-menu {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: white;
+            gap: 0.5rem;
+            padding: 5px;
+            border-radius: 5px; /* Añadir bordes redondeados si es necesario */
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .user-menu:hover {
+            background-color: rgba(255, 255, 255, 0.1);  /* Fondo suave al hacer hover */
+            border-radius: 5px;  /* Asegúrate de que el borde se mantenga redondeado */
+        }
+        .user-menu .dropdown-menu {
+            position: absolute;
+            bottom: -45px; /* Ajusta esta distancia para alinearlo sobre el icono */
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+            color: black;
+            animation: slideUp 0.3s ease forwards;
+            transform-origin: bottom;
+            z-index: 1000;
+            animation: slideDown 0.3s ease forwards;
+        }
+        .user-menu .dropdown-menu a {
+            color: #333;
+            text-decoration: none;
+        }
+        .user-menu .dropdown-menu a:hover {
+            color: #006629;
+        }
+        .user-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        .user-icon:hover {
+            border: 2px solid #ccc;  /* Agrega un borde alrededor del icono */
+            border-radius: 50%;  /* Hace el borde redondeado si el icono es circular */
+            background-color: rgba(255, 255, 255, 0.1);  /* Cambio de color de fondo */
+            padding: 5px;  /* Espacio extra para el borde */
+        }
+        /* Animación para deslizar hacia abajo */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -234,33 +291,49 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                 </form>
             </div>
 
-            <div class="enlace">
+            <!-- <div class="enlace">
                 <i class="bx bxs-exit"></i>
                 <span onclick="location.href='logout.php';">Cerrar Sesion</span>
+            </div> -->
+
+            <div class="enlace">
+                <i class="bi bi-display"></i>
+                <span onclick="location.href='register.php';">Panel Administrador</span>
             </div>
         </div>
     </div>
     <div class="seccion">
-        <nav class="navbar navbar-expand-lg" style="background-color:#006629;">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div>
-                        <?php
-                        if ($current_role == 'Director') {
-                            echo '<p>Bienvenido Director.</p>';
-                        } elseif ($current_role == 'Mentor') {
-                            echo '<p>Bienvenido Mentor.</p>';
-                        } elseif ($current_role == 'Responsable') {
-                            echo '<p>Bienvenido Responsable.</p>';
-                        }
-                        ?>
+    <nav class="navbar navbar-expand-lg" style="background-color:#006629;">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+                <div>
+                    <?php
+                    if ($current_role == 'Director') {
+                        echo '<p>Bienvenido Director.</p>';
+                    } elseif ($current_role == 'Mentor') {
+                        echo '<p>Bienvenido Mentor.</p>';
+                    } elseif ($current_role == 'Responsable') {
+                        echo '<p>Bienvenido Responsable.</p>';
+                    }
+                    ?>
+                </div>
+                <!-- Icono de usuario y menú desplegable -->
+                <!-- Icono de usuario y menú desplegable -->
+                <div class="user-menu position-relative" onclick="toggleDropdown()">
+                    <i class="bi bi-chevron-compact-down"></i>
+                    <i class="bi bi-person-fill"></i>
+                    <span class="user-name"><?php echo htmlspecialchars($usuario); ?></span>
+                    <div class="dropdown-menu">
+                        <a href="logout.php">Cerrar sesión</a>
                     </div>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
+    <!-- Otros elementos aquí, como los iframes -->
         <div class="tablero">
                 <?php if ($selected_dashboard == 'TAREAS'): ?>
                     <iframe title="Dashboard_Vinculacion - Tareas" width="1250" height="600" src="https://app.powerbi.com/reportEmbed?reportId=2f567d7d-83fe-4285-a804-87af34c1c389&autoAuth=true&ctid=d9a7c315-62a6-4cb6-b905-be798b1d5076&navContentPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
@@ -271,8 +344,8 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                 <?php endif; ?>
             </div>
         <div class="user-info">
-            <i class="bi bi-person-fill">User: </i>
-            <?php echo htmlspecialchars($usuario); ?>
+            <i>UTM Dirección de Vinculacion © 2024.</i>
+            <!-- <?php echo htmlspecialchars($usuario); ?> -->
         </div>
     </div>
 </body>
