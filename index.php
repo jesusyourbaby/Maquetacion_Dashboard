@@ -296,10 +296,10 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                 <span onclick="location.href='logout.php';">Cerrar Sesion</span>
             </div> -->
 
-            <div class="enlace">
+            <!-- <div class="enlace">
                 <i class="bi bi-display"></i>
                 <span onclick="location.href='register.php';">Panel Administrador</span>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="seccion">
