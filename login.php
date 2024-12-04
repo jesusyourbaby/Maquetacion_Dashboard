@@ -1,33 +1,42 @@
 <?php
 session_start();
-include 'conexion.php'; // Incluir la conexión a la base de datos
-// Datos de conexión a la base de datos
+include 'conexion.php'; 
 $error = '';
 
-// Verificar si se han enviado los datos del formulario
 if (isset($_POST['username']) && isset($_POST['password'])) {
-    // Obtener los datos del formulario
     $user = $_POST['username'];
     $pass = $_POST['password'];
 
-    // Consultar en la base de datos
-    $sql = "SELECT * FROM permiso WHERE usuario='$user' AND contrasena='$pass'";
+    $sql = "SELECT * FROM permiso WHERE usuario='$user'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Obtener los datos del usuario
         $row = $result->fetch_assoc();
-        
-        // Iniciar sesión
-        $_SESSION['usuario'] = $user;
-        $_SESSION['rol'] = $row['rol'];
-        
-        // Redirigir a la página principal
-        header("Location: index.php");
-        exit;
-    } else {
-        // Usuario o contraseña incorrecta
+        $storedPassword = $row['contrasena'];
 
+        // Verificar si la contraseña es un hash o texto plano
+        if (password_verify($pass, $storedPassword)) {
+            // Inicio de sesión exitoso con hash
+            $_SESSION['usuario'] = $user;
+            $_SESSION['rol'] = $row['rol'];
+            header("Location: index.php");
+            exit;
+        } elseif ($pass === $storedPassword) {
+            // Inicio de sesión exitoso con texto plano (transición)
+
+            // Actualizar la contraseña a hash
+            $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
+            $updateSql = "UPDATE permiso SET contrasena='$hashedPassword' WHERE usuario='$user'";
+            $conn->query($updateSql);
+
+            $_SESSION['usuario'] = $user;
+            $_SESSION['rol'] = $row['rol'];
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Usuario o contraseña incorrecta";
+        }
+    } else {
         $error = "Usuario o contraseña incorrecta";
     }
 } 
@@ -234,6 +243,12 @@ $conn->close();
             <div class="input-container">
                 <i class="bi bi-box-arrow-in-right" style="margin: 5px;"></i>
                 <input type="submit" value="INGRESAR" class="login-btn">
+            </div>
+
+            <div class="input-container">
+                <a href="solicitud_credencial.php" style="color: #ffffff; text-decoration: none; font-size: 16px; margin-left: 10px;">
+                ¿Olvidaste tu contraseña?
+                </a>
             </div>
 
             <div class="input-container">

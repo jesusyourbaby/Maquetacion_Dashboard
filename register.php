@@ -194,7 +194,12 @@ $conn->close(); // Cerrar la conexión
                 <i class="bi bi-pencil-square" style="margin: 5px;"></i>
                 <input type="submit" value="ENTRAR" class="register-btn">
             </div>
-            <a href="login.php">Sistema de Procesos en Vinculación</a><br>
+            <div class="input-container">
+                <a href="login.php" style="color: #ffffff; text-decoration: none; font-size: 16px; margin-left: 10px;">
+                Sistema de Procesos en Vinculacion
+                </a>
+            </div>
+            <a>© 2024 Universidad Técnica de Manabí</a>
         </form>
     </div>
 </body>

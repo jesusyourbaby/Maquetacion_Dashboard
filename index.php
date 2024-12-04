@@ -252,6 +252,170 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                 transform: translateY(0);
             }
         }
+        /* Estilo para la ventana emergente */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .help-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 60%;
+            max-width: 600px;
+            text-align: center;
+            color: #333;
+        }
+
+        .help-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .help-modal-content button {
+        background-color: #008033;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+
+        /* Estilo para centrar exclusivamente la ventana de feedback */
+        #feedbackModal {
+        display: none; /* Oculta la ventana por defecto */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        justify-content: center; /* Centrado horizontal */
+        align-items: center; /* Centrado vertical */
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+}
+
+        /* Estilo del contenido dentro de #feedbackModal */
+        #feedbackModal .help-modal-content {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 40%; /* Ajusta el ancho según sea necesario */
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #feedbackForm {
+            display: flex; /* Activa flexbox */
+            flex-direction: column; /* Organiza los elementos en una columna */
+            gap: 15px; /* Espaciado entre los elementos */
+        }
+
+        #feedbackForm button {
+            align-self: center; /* Centra el botón horizontalmente */
+            padding: 10px 20px; /* Ajusta el tamaño del botón */
+            background-color: #006629; /* Cambia el color del botón si es necesario */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #feedbackForm button:hover {
+            background-color: #004d20; /* Color más oscuro en hover */
+        }
+
+        #feedbackForm textarea {
+            resize: none; /* Desactiva la capacidad de redimensionar */
+        }
+
+        /* Estilos del enlace FAQ */
+        .faq-modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .faq-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            position: relative; /* Añadido para posicionar la X dentro de la caja */
+            color: #333;
+        }
+
+        /* Estilo de la X de cierre */
+        .faq-modal-close {
+            font-size: 30px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #000;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        /* Estilos generales para las preguntas y respuestas */
+        .faq-item {
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background-color: #e0e0e0;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 2px solid #ccc;
+            margin-top: 5px;
+        }
+
+        .faq-answer p {
+            font-size: 16px;
+            color: #555;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -291,17 +455,102 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
                 </form>
             </div>
 
-            <!-- <div class="enlace">
-                <i class="bx bxs-exit"></i>
-                <span onclick="location.href='logout.php';">Cerrar Sesion</span>
-            </div> -->
+            <div class="enlace">
+                <i class="bi bi-info-circle"></i>
+                <span onclick="openHelpModal();">Ayuda</span>
+            </div>
+
+            <div class="enlace">
+                <i class="bi bi-chat-left-dots"></i>
+                <span onclick="openFeedbackModal();">Feedback</span>
+            </div>
+
+            <div class="enlace">
+                 <i class="bi bi-person-raised-hand"></i>
+                <span onclick="openFAQModal();">FAQ</span>
+            </div>
+
+
 
             <!-- <div class="enlace">
                 <i class="bi bi-display"></i>
-                <span onclick="location.href='register.php';">Panel Administrador</span>
+                <span onclick="location.href='https://pasantias.utm.edu.ec/?#6334e5824c402';">Sistema PPP-VIN</span>
             </div> -->
         </div>
     </div>
+
+        <!-- Ventana emergente de ayuda -->
+    <div class="help-modal" id="helpModal">
+        <div class="help-modal-content">
+            <button class="help-modal-close" onclick="closeHelpModal();">&times;</button>
+            <h2>Información de ayuda</h2>
+            <p>Bienvenido al sistema de gestión de procesos de vinculación. En esta página principal, podrás:</p>
+            <ul>
+                <li><strong>Visualizar procesos activos:</strong> Explora la relación entre tareas, proyectos e instituciones en tiempo real.</li>
+                <li><strong>Filtrar información:</strong> Usa herramientas de búsqueda y filtros para encontrar datos específicos rápidamente.</li>
+                <li><strong>Reportes:</strong> Obtén reportes detallados sobre los procesos de vinculación para análisis o presentaciones.</li>
+            </ul>
+            <p>Si necesitas más detalles sobre cómo usar una funcionalidad específica, consulta la sección de ayuda o contacta al administrador del sistema.</p>
+            <button onclick="window.location.href='index.php'">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Ventana emergente de feedback -->
+    <div class="help-modal" id="feedbackModal">
+        <div class="help-modal-content">
+            <button class="help-modal-close" onclick="closeFeedbackModal();">&times;</button>
+            <h2>¡Queremos tu opinión!</h2>
+            <p>Tienes alguna opinión o sugerencia para mejorar el sistema. Envíanos tus comentarios:</p>
+            <form id="feedbackForm" action="send_feedback.php" method="POST">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+
+                <label for="email">Correo:</label>
+                <input type="email" id="email" name="email" placeholder="Tu correo" required>
+
+                <label for="message">Comentario:</label>
+                <textarea id="message" name="message" rows="5" placeholder="Escribe tus comentarios aquí..." required></textarea>
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal de FAQ -->
+    <div class="faq-modal" id="faqModal">
+        <div class="faq-modal-content">
+            <!-- Botón de cerrar dentro de la caja -->
+            <button class="faq-modal-close" onclick="closeFAQModal();">&times;</button>
+            <h2>Preguntas Frecuentes</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(0)">
+                    ¿Cómo puedo restablecer mi contraseña?
+                </button>
+                <div class="faq-answer" id="answer0">
+                    <p>Para restablecer tu contraseña, ve a la página de inicio de sesión y haz clic en "Olvidé mi contraseña". Recibirás un enlace para restablecer tu contraseña en tu correo electrónico.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(1)">
+                    ¿Cómo puedo actualizar mi perfil?
+                </button>
+                <div class="faq-answer" id="answer1">
+                    <p>Para actualizar tu perfil, deberas hablar con un administrador, para cambiar ya sea tu usuario o clave.</p>
+                </div>
+            </div>
+
+            
+
+            <!-- Agregar más preguntas frecuentes según sea necesario -->
+        </div>
+    </div>
+
+
+
+
     <div class="seccion">
     <nav class="navbar navbar-expand-lg" style="background-color:#006629;">
         <div class="container-fluid">
@@ -348,5 +597,65 @@ $selected_dashboard = isset($_POST['dashboard']) ? $_POST['dashboard'] : null;
             <!-- <?php echo htmlspecialchars($usuario); ?> -->
         </div>
     </div>
+
+    <script>
+        // Función para abrir la ventana emergente
+        function openHelpModal() {
+            document.getElementById('helpModal').style.display = 'flex';
+        }
+
+        // Función para cerrar la ventana emergente
+        function closeHelpModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+    </script>
+
+    <script>
+        
+        // Feedback
+ 
+        function openFeedbackModal() {
+            const feedbackModal = document.getElementById("feedbackModal");
+            feedbackModal.style.display = "flex"; // Cambia a flex para mostrarlo
+        }
+
+        function closeFeedbackModal() {
+            const feedbackModal = document.getElementById("feedbackModal");
+            feedbackModal.style.display = "none"; // Cambia a none para ocultarlo
+        }
+
+
+    </script>
+
+    <script>
+
+        //FAQ
+        function openFAQModal() {
+            const faqModal = document.getElementById("faqModal");
+            faqModal.style.display = "flex"; // Mostrar el modal
+        }
+
+        function closeFAQModal() {
+            const faqModal = document.getElementById("faqModal");
+            faqModal.style.display = "none"; // Ocultar el modal
+        }
+
+        function toggleAnswer(index) {
+            const answer = document.getElementById(`answer${index}`);
+            const isVisible = answer.style.display === "block";
+
+            // Ocultar todas las respuestas
+            const allAnswers = document.querySelectorAll('.faq-answer');
+            allAnswers.forEach(item => item.style.display = "none");
+
+            // Mostrar la respuesta actual solo si no estaba visible
+            if (!isVisible) {
+                answer.style.display = "block";
+            }
+        }
+
+
+    </script>
+
 </body>
 </html>
